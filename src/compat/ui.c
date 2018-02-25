@@ -136,6 +136,7 @@ int ui_event(void)
    {
       unsigned id;
       input_event_t fuse_event;
+      input_key button;
       
       for (port = 0; port < MAX_PADS; port++)
       {
@@ -160,10 +161,11 @@ int ui_event(void)
             for (id = 0; id < sizeof(map) / sizeof(map[0]); id++)
             {
                is_down = input_state_cb(port, RETRO_DEVICE_JOYPAD, 0, map[id]);
+               
                if (device == RETRO_DEVICE_KEYBOARD_JOYSTICK)
-                  input_key button = translate_keyboard(map[id]);
+                  button = translate_keyboard(map[id]);
                else
-                  input_key button = translate(map[id]);
+                  button = translate(map[id]);
 
                if (is_down)
                {
