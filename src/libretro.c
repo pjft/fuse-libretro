@@ -182,6 +182,18 @@ static struct retro_input_descriptor input_descriptors[] = {
    { 6, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Keyboard overlay" },
    { 6, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L, "Enter" },
    { 6, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R, "Space" },
+   // Keyboard
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP, "Up" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_DOWN, "Down" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT, "Left" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT, "Right" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A, "Fire" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B, "Up" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, "Fire" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "Fire" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Keyboard overlay" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L, "Enter" },
+   { 7, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R, "Space" },
    // Terminate
    { 255, 255, 255, 255, NULL }
 };
@@ -385,6 +397,7 @@ static int get_joystick(unsigned device)
       case RETRO_DEVICE_TIMEX1_JOYSTICK:    return 5;
       case RETRO_DEVICE_TIMEX2_JOYSTICK:    return 6;
       case RETRO_DEVICE_FULLER_JOYSTICK:    return 7;
+      case RETRO_DEVICE_KEYBOARD_JOYSTICK:  return 8;
    }
 
    return 0;
@@ -414,7 +427,8 @@ void retro_set_environment(retro_environment_t cb)
       { "Sinclair 2 Joystick", RETRO_DEVICE_SINCLAIR2_JOYSTICK },
       { "Timex 1 Joystick", RETRO_DEVICE_TIMEX1_JOYSTICK },
       { "Timex 2 Joystick", RETRO_DEVICE_TIMEX2_JOYSTICK },
-      { "Fuller Joystick", RETRO_DEVICE_FULLER_JOYSTICK }
+      { "Fuller Joystick", RETRO_DEVICE_FULLER_JOYSTICK },
+      { "Keyboard Emulation", RETRO_DEVICE_KEYBOARD_JOYSTICK }
    };
 
    static const struct retro_controller_description keyboards[] = {
@@ -882,6 +896,7 @@ void retro_set_controller_port_device(unsigned port, unsigned device)
       case RETRO_DEVICE_TIMEX1_JOYSTICK:
       case RETRO_DEVICE_TIMEX2_JOYSTICK:
       case RETRO_DEVICE_FULLER_JOYSTICK:
+      case RETRO_DEVICE_KEYBOARD_JOYSTICK:
          if (port == 0)
          {
             settings_current.joystick_1_output = get_joystick(device);

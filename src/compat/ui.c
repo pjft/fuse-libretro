@@ -19,6 +19,7 @@ int ui_init(int *argc, char ***argv)
 
 static input_key translate(unsigned index)
 {
+   // pjft - this is the place where the joystick translation takes place
    switch (index)
    {
       case RETRO_DEVICE_ID_JOYPAD_UP:    return INPUT_JOYSTICK_UP;
@@ -29,6 +30,26 @@ static input_key translate(unsigned index)
       case RETRO_DEVICE_ID_JOYPAD_X:
       case RETRO_DEVICE_ID_JOYPAD_Y:     return INPUT_JOYSTICK_FIRE_1;
       case RETRO_DEVICE_ID_JOYPAD_B:     return INPUT_JOYSTICK_UP;
+      case RETRO_DEVICE_ID_JOYPAD_L:     return INPUT_KEY_Return;
+      case RETRO_DEVICE_ID_JOYPAD_R:     return INPUT_KEY_space;
+   }
+   
+   return INPUT_KEY_NONE;
+}
+
+static input_key translate_keyboard(unsigned index)
+{
+   // pjft - this is the place where the joystick translation takes place
+   switch (index)
+   {
+      case RETRO_DEVICE_ID_JOYPAD_UP:    return INPUT_KEY_q;
+      case RETRO_DEVICE_ID_JOYPAD_DOWN:  return INPUT_KEY_a;
+      case RETRO_DEVICE_ID_JOYPAD_LEFT:  return INPUT_KEY_o;
+      case RETRO_DEVICE_ID_JOYPAD_RIGHT: return INPUT_KEY_p;
+      case RETRO_DEVICE_ID_JOYPAD_A:     return INPUT_KEY_m;
+      case RETRO_DEVICE_ID_JOYPAD_X:     return INPUT_KEY_z;
+      case RETRO_DEVICE_ID_JOYPAD_Y:     return INPUT_KEY_x;
+      case RETRO_DEVICE_ID_JOYPAD_B:     return INPUT_KEY_n;
       case RETRO_DEVICE_ID_JOYPAD_L:     return INPUT_KEY_Return;
       case RETRO_DEVICE_ID_JOYPAD_R:     return INPUT_KEY_space;
    }
@@ -93,6 +114,7 @@ int ui_event(void)
          case RETRO_DEVICE_TIMEX1_JOYSTICK:
          case RETRO_DEVICE_TIMEX2_JOYSTICK:
          case RETRO_DEVICE_FULLER_JOYSTICK:
+         case RETRO_DEVICE_KEYBOARD_JOYSTICK:
             is_down |= input_state_cb(0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT);
       }
    }
@@ -129,6 +151,7 @@ int ui_event(void)
             case RETRO_DEVICE_TIMEX1_JOYSTICK:
             case RETRO_DEVICE_TIMEX2_JOYSTICK:
             case RETRO_DEVICE_FULLER_JOYSTICK:
+            case RETRO_DEVICE_KEYBOARD_JOYSTICK:
                is_joystick = 1;
          }
          
@@ -137,15 +160,19 @@ int ui_event(void)
             for (id = 0; id < sizeof(map) / sizeof(map[0]); id++)
             {
                is_down = input_state_cb(port, RETRO_DEVICE_JOYPAD, 0, map[id]);
-               
+               if (device == RETRO_DEVICE_KEYBOARD_JOYSTICK)
+                  input_key button = translate_keyboard(map[id]);
+               else
+                  input_key button = translate(map[id]);
+
                if (is_down)
                {
                   if (!joypad_state[port][id])
                   {
                      joypad_state[port][id] = true;
-                     input_key button = translate(map[id]);
-                 
-                     if (button == INPUT_KEY_Return || button == INPUT_KEY_space)
+
+                     // pjft - look into this
+                     if (button == INPUT_KEY_Return || button == INPUT_KEY_space || device == RETRO_DEVICE_KEYBOARD_JOYSTICK)
                      {
                         fuse_event.type = INPUT_EVENT_KEYPRESS;
                         fuse_event.types.key.native_key = button;
@@ -168,9 +195,8 @@ int ui_event(void)
                   if (joypad_state[port][id])
                   {
                      joypad_state[port][id] = false;
-                     input_key button = translate(map[id]);
                  
-                     if (button == INPUT_KEY_Return || button == INPUT_KEY_space)
+                     if (button == INPUT_KEY_Return || button == INPUT_KEY_space || device == RETRO_DEVICE_KEYBOARD_JOYSTICK)
                      {
                         fuse_event.type = INPUT_EVENT_KEYRELEASE;
                         fuse_event.types.key.native_key = button;
@@ -196,6 +222,9 @@ int ui_event(void)
       {
          unsigned device = input_devices[port];
          
+         // pjft - look into this
+         // see where keysyms_map is defined, I imagine we may need to set one of our own
+         // for joystick events to keyboard events
          if (device == RETRO_DEVICE_SPECTRUM_KEYBOARD)
          {
             for (id = 0; keysyms_map[id].ui; id++)
