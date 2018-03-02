@@ -49,6 +49,7 @@ extern void* snapshot_buffer;
 extern size_t snapshot_size;
 extern void* tape_data;
 extern size_t tape_size;
+extern int joymap[16];
 extern keysyms_map_t keysyms_map[];
 
 int update_variables(int);
