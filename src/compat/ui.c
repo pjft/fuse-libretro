@@ -266,6 +266,7 @@ int ui_event(void)
    }
    else
    {
+      // pjft - if keyboard overlay was active
       unsigned port, id;
       
       for (port = 0; port < MAX_PADS; port++)
@@ -293,6 +294,7 @@ int ui_event(void)
                         case RETRO_DEVICE_ID_JOYPAD_A:
                            if (keyb_send == 0)
                            {
+                              // pjft - this is where we send the simulated key
                               keyb_overlay = false;
                               
                               keyb_event.type = INPUT_EVENT_KEYPRESS;
