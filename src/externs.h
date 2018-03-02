@@ -19,6 +19,7 @@
 #define RETRO_DEVICE_TIMEX1_JOYSTICK    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 4)
 #define RETRO_DEVICE_TIMEX2_JOYSTICK    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 5)
 #define RETRO_DEVICE_FULLER_JOYSTICK    RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 6)
+#define RETRO_DEVICE_KEYBOARD_JOYSTICK  RETRO_DEVICE_SUBCLASS(RETRO_DEVICE_JOYPAD, 7)
 
 // These defines shouldn't be here...
 #define MAX_WIDTH  640
@@ -49,6 +50,7 @@ extern void* snapshot_buffer;
 extern size_t snapshot_size;
 extern void* tape_data;
 extern size_t tape_size;
+extern int joymap[16];
 extern keysyms_map_t keysyms_map[];
 
 int update_variables(int);
