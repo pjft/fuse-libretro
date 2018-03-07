@@ -92,7 +92,7 @@ int select_pressed;
 int keyb_overlay;
 unsigned keyb_x;
 unsigned keyb_y;
-bool joypad_state[MAX_PADS][10];
+bool joypad_state[MAX_PADS][16];
 bool keyb_state[RETROK_LAST];
 void*  snapshot_buffer;
 size_t snapshot_size;
