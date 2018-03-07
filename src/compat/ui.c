@@ -55,7 +55,11 @@ int ui_event(void)
       RETRO_DEVICE_ID_JOYPAD_X,
       RETRO_DEVICE_ID_JOYPAD_Y,
       RETRO_DEVICE_ID_JOYPAD_L,
-      RETRO_DEVICE_ID_JOYPAD_R
+      RETRO_DEVICE_ID_JOYPAD_R,
+      RETRO_DEVICE_ID_JOYPAD_L2,
+      RETRO_DEVICE_ID_JOYPAD_R2,
+      RETRO_DEVICE_ID_JOYPAD_L,
+      RETRO_DEVICE_ID_JOYPAD_START
    };
    
    static const input_key keyb_layout[4][10] = {
